@@ -1,0 +1,23 @@
+{
+  "name": "emberhunt-discord",
+  "version": "1.0.0",
+  "description": "The discord bot for emberhunt developers",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emberhunt/emberhunt-discord.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emberhunt/emberhunt-discord/issues"
+  },
+  "homepage": "https://github.com/emberhunt/emberhunt-discord#readme",
+  "dependencies": {
+    "discord.js": "^11.5.0",
+    "net": "^1.0.2"
+  }
+}
