@@ -13,7 +13,7 @@ module.exports = {
 
 setTimezone = (msg, fullCommand, server) => {
 	var userToSetRole = server.members.find(member => member.id === msg.author.id);
-	if (!fullCommand[2].match(/GMT[+|-][0-9]/g) || userToSetRole == null)
+	if (!fullCommand[2].match(/^(GMT[+|-]((?:[0-9]|1[0-9]|2[0-3])?|24))$/g) || userToSetRole == null)
 		return
 	var role = server.roles.find(guildRole => guildRole.name === fullCommand[1]);
 	if (role) {
