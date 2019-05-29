@@ -41,4 +41,119 @@ client.on('guildMemberAdd', member => {
 
 });
 
+String.prototype.hexEncode = () => {
+	var hex, i;
+
+    var result = "";
+    for (i=0; i<this.length; i++) {
+        hex = this.charCodeAt(i).toString(16);
+        result += ("000"+hex).slice(-4);
+    }
+
+    return result
+}
+
+client.on('messageReactionAdd', (messageReaction, user) => {
+	/*
+	computer:d83ddcbb
+	art:d83cdfa8
+	music:d83cdfb5
+	T:d83cddf9
+	eye:d83ddc41
+	icon:00690063006f006e
+
+	*/
+	if (messageReaction.message.id == '583366761198387201') {
+		var hexEmoji = messageReaction.emoji.name.hexEncode()
+		var server = messageReaction.message.guild;
+		var role = null;
+		// This is the message that has the reactions for phone
+		if (hexEmoji === "d83ddcbb") {
+			// Computer - Programmer
+			role = server.roles.find(guildRole => guildRole.name === "programmer");
+		} else if (hexEmoji === "d83cdfa8") {
+			// Art - Art
+			role = server.roles.find(guildRole => guildRole.name === "artist");
+		} else if (hexEmoji === "d83cdfb5") {
+			// Music - Music
+			role = server.roles.find(guildRole => guildRole.name === "sound-engineer");
+		} else if (hexEmoji === "d83cddf9") {
+			// T - Tester
+			role = server.roles.find(guildRole => guildRole.name === "tester");
+		} else if (hexEmoji === "d83ddc41") {
+			// Eye - Nothing
+			role = server.roles.find(guildRole => guildRole.name === "Not here to help :(");
+		} else if (hexEmoji === "00690063006f006e") {
+			// Icon - Writer
+			role = server.roles.find(guildRole => guildRole.name === "writer");
+		}
+		if (role)
+			user.addRole(role);
+	}
+});
+
+client.on('messageReactionRemove', (messageReaction, user) => {
+	/*
+	computer:d83ddcbb
+	art:d83cdfa8
+	music:d83cdfb5
+	T:d83cddf9
+	eye:d83ddc41
+	icon:00690063006f006e
+
+	*/
+	if (messageReaction.message.id == '583366761198387201') {
+		var hexEmoji = messageReaction.emoji.name.hexEncode()
+		var server = messageReaction.message.guild;
+		var role = null;
+		// This is the message that has the reactions for phone
+		if (hexEmoji === "d83ddcbb") {
+			// Computer - Programmer
+			role = server.roles.find(guildRole => guildRole.name === "programmer");
+		} else if (hexEmoji === "d83cdfa8") {
+			// Art - Art
+			role = server.roles.find(guildRole => guildRole.name === "artist");
+		} else if (hexEmoji === "d83cdfb5") {
+			// Music - Music
+			role = server.roles.find(guildRole => guildRole.name === "sound-engineer");
+		} else if (hexEmoji === "d83cddf9") {
+			// T - Tester
+			role = server.roles.find(guildRole => guildRole.name === "tester");
+		} else if (hexEmoji === "d83ddc41") {
+			// Eye - Nothing
+			role = server.roles.find(guildRole => guildRole.name === "Not here to help :(");
+		} else if (hexEmoji === "00690063006f006e") {
+			// Icon - Writer
+			role = server.roles.find(guildRole => guildRole.name === "writer");
+		}
+		if (role)
+			user.removeRole(role);
+	}
+});
+
+client.on('raw', packet => {
+    // We don't want this to run on unrelated packets
+    if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
+    // Grab the channel to check the message from
+    const channel = client.channels.get(packet.d.channel_id);
+    // There's no need to emit if the message is cached, because the event will fire anyway for that
+    if (channel.messages.has(packet.d.message_id)) return;
+    // Since we have confirmed the message is not cached, let's fetch it
+    channel.fetchMessage(packet.d.message_id).then(message => {
+        // Emojis can have identifiers of name:id format, so we have to account for that case as well
+        const emoji = packet.d.emoji.id ? `${packet.d.emoji.name}:${packet.d.emoji.id}` : packet.d.emoji.name;
+        // This gives us the reaction we need to emit the event properly, in top of the message object
+        const reaction = message.reactions.get(emoji);
+        // Adds the currently reacting user to the reaction's users collection.
+        if (reaction) reaction.users.set(packet.d.user_id, client.users.get(packet.d.user_id));
+        // Check which type of event it is before emitting
+        if (packet.t === 'MESSAGE_REACTION_ADD') {
+            client.emit('messageReactionAdd', reaction, client.users.get(packet.d.user_id));
+        }
+        if (packet.t === 'MESSAGE_REACTION_REMOVE') {
+            client.emit('messageReactionRemove', reaction, client.users.get(packet.d.user_id));
+        }
+    });
+});
+
 client.login(Secret.auth).catch(console.error);

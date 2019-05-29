@@ -1,9 +1,12 @@
 module.exports = {
 	receiveMessage : (msg, server) => {
 		var fullCommand = msg.content.split(" ");
-    	if (fullCommand[0].toLowerCase() == "#!setrole") {
-    		setRole(msg, fullCommand, server);
-    	}
+		switch(fullCommand[0].toLowerCase()) {
+			case "#!setrole":
+				setRole(msg, fullCommand, server);
+				break;
+			default:
+		}
 	}
 }
 
