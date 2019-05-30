@@ -41,7 +41,7 @@ client.on('guildMemberAdd', member => {
 
 });
 
-String.prototype.hexEncode = () => {
+String.prototype.hexEncode = function() {
 	var hex, i;
 
     var result = "";
@@ -64,8 +64,10 @@ client.on('messageReactionAdd', (messageReaction, user) => {
 
 	*/
 	if (messageReaction.message.id == '583366761198387201') {
-		var hexEmoji = messageReaction.emoji.name.hexEncode()
+		var hexEmoji = messageReaction.emoji.name.hexEncode();
 		var server = messageReaction.message.guild;
+		var userToSetRole = server.members.find(member => member.displayName === user.username);
+
 		var role = null;
 		// This is the message that has the reactions for phone
 		if (hexEmoji === "d83ddcbb") {
@@ -88,7 +90,7 @@ client.on('messageReactionAdd', (messageReaction, user) => {
 			role = server.roles.find(guildRole => guildRole.name === "writer");
 		}
 		if (role)
-			user.addRole(role);
+			userToSetRole.addRole(role).then(console.log).catch(console.error);
 	}
 });
 
@@ -105,6 +107,7 @@ client.on('messageReactionRemove', (messageReaction, user) => {
 	if (messageReaction.message.id == '583366761198387201') {
 		var hexEmoji = messageReaction.emoji.name.hexEncode()
 		var server = messageReaction.message.guild;
+		var userToSetRole = server.members.find(member => member.displayName === user.username);
 		var role = null;
 		// This is the message that has the reactions for phone
 		if (hexEmoji === "d83ddcbb") {
@@ -127,7 +130,7 @@ client.on('messageReactionRemove', (messageReaction, user) => {
 			role = server.roles.find(guildRole => guildRole.name === "writer");
 		}
 		if (role)
-			user.removeRole(role);
+			userToSetRole.removeRole(role).then(console.log).catch(console.error);
 	}
 });
 
