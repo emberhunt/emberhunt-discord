@@ -4,6 +4,7 @@ const Secret = require("./secret.js");
 const ServerComm = require("./server-communication.js");
 const BotUtility = require("./bot-utility.js");
 const GeneralUtility = require("./general-utility.js");
+const SelectRoleUtility = require("./select-role-utility.js");
 
 // Discord stuff ===============================================================
 const client = new Discord.Client();
@@ -21,16 +22,18 @@ client.on('message', msg => {
     var user = msg.author;
     var server = msg.guild;
     if (!user.bot) {
-        if (!msg.content.startsWith("#!")) return;
         if (textChannel instanceof Discord.TextChannel) {
 	        if (textChannel.name == "server-commands") {
 	        	// Game Commands
-		        var fullCommand = msg.content.toLowerCase().split(" ");
-		        ServerComm.processCommand(msg, user, fullCommand);
+		        ServerComm.processCommand(msg, user);
 		    } else if (textChannel.name == "bot") {
+		    	if (!msg.content.startsWith("#!")) return;
 		    	// Other Bot Commands
 		    	BotUtility.receiveMessage(msg, server);
+		    } else if (textChannel.name == "select-role") {
+		    	SelectRoleUtility.receiveMessage(msg, server);
 		    } else {
+		    	if (!msg.content.startsWith("#!")) return;
 		    	GeneralUtility.receiveMessage(msg, server);
 		    }
 		}
@@ -63,11 +66,12 @@ client.on('messageReactionAdd', (messageReaction, user) => {
 	icon:00690063006f006e
 
 	*/
-	if (messageReaction.message.id == '583366761198387201') {
+	// Set What you want to do
+	if (messageReaction.message.id == '583356382170841088') {
 		var hexEmoji = messageReaction.emoji.name.hexEncode();
 		var server = messageReaction.message.guild;
 		var userToSetRole = server.members.find(member => member.displayName === user.username);
-
+		console.log(hexEmoji);
 		var role = null;
 		// This is the message that has the reactions for phone
 		if (hexEmoji === "d83ddcbb") {
@@ -88,6 +92,33 @@ client.on('messageReactionAdd', (messageReaction, user) => {
 		} else if (hexEmoji === "00690063006f006e") {
 			// Icon - Writer
 			role = server.roles.find(guildRole => guildRole.name === "writer");
+		}
+		if (role)
+			userToSetRole.addRole(role).then(console.log).catch(console.error);
+	}
+
+	/*
+	A:d83cdde6
+	I:d83cddee
+	O:d83cddf4
+	*/
+	// What phone you have
+	if (messageReaction.message.id == '583685148281667586') {
+		var hexEmoji = messageReaction.emoji.name.hexEncode();
+		var server = messageReaction.message.guild;
+		var userToSetRole = server.members.find(member => member.displayName === user.username);
+
+		var role = null;
+		// This is the message that has the reactions for phone
+		if (hexEmoji === "d83cdde6") {
+			// Computer - Programmer
+			role = server.roles.find(guildRole => guildRole.name === "Android");
+		} else if (hexEmoji === "d83cddee") {
+			// Art - Art
+			role = server.roles.find(guildRole => guildRole.name === "iOS");
+		} else if (hexEmoji === "d83cddf4") {
+			// Music - Music
+			role = server.roles.find(guildRole => guildRole.name === "Other");
 		}
 		if (role)
 			userToSetRole.addRole(role).then(console.log).catch(console.error);
@@ -128,6 +159,32 @@ client.on('messageReactionRemove', (messageReaction, user) => {
 		} else if (hexEmoji === "00690063006f006e") {
 			// Icon - Writer
 			role = server.roles.find(guildRole => guildRole.name === "writer");
+		}
+		if (role)
+			userToSetRole.removeRole(role).then(console.log).catch(console.error);
+	}
+
+	/*
+	A:d83cdde6
+	I:d83cddee
+	O:d83cddf4
+	*/
+	// What phone you have
+	if (messageReaction.message.id == '583685148281667586') {
+		var hexEmoji = messageReaction.emoji.name.hexEncode()
+		var server = messageReaction.message.guild;
+		var userToSetRole = server.members.find(member => member.displayName === user.username);
+		var role = null;
+		// This is the message that has the reactions for phone
+		if (hexEmoji === "d83cdde6") {
+			// Computer - Programmer
+			role = server.roles.find(guildRole => guildRole.name === "Android");
+		} else if (hexEmoji === "d83cddee") {
+			// Art - Art
+			role = server.roles.find(guildRole => guildRole.name === "iOS");
+		} else if (hexEmoji === "d83cddf4") {
+			// Music - Music
+			role = server.roles.find(guildRole => guildRole.name === "Other");
 		}
 		if (role)
 			userToSetRole.removeRole(role).then(console.log).catch(console.error);

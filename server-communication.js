@@ -2,7 +2,7 @@ const Net = require('net');
 const Global = require('./globals.js');
 
 module.exports = {
-	processCommand: (message, chatUser, fullCommand) => {
+	processCommand: (message, chatUser) => {
 		var client = new Net.Socket();
 		client.on('error', (err) => {console.log(err)});
 	    // Send a connection request to the server.

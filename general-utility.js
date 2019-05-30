@@ -13,7 +13,7 @@ module.exports = {
 
 setTimezone = (msg, fullCommand, server) => {
 	var userToSetRole = server.members.find(member => member.id === msg.author.id);
-	if (!fullCommand[2].match(/^(GMT[+|-]((?:[0-9]|1[0-1])?|12))$/g) || userToSetRole == null)
+	if (!fullCommand[1].match(/^(GMT[+|-]((?:[0-9]|1[0-1])?|12))$/g) || userToSetRole == null)
 		return
 	var role = server.roles.find(guildRole => guildRole.name === fullCommand[1]);
 	if (role) {
@@ -22,7 +22,7 @@ setTimezone = (msg, fullCommand, server) => {
 	} else {
 		// Role doesn't exist create it
 		server.createRole({
-			name: fullCommand[2]
+			name: fullCommand[1]
 		}).then(roleAssign => {
 			userToSetRole.addRole(roleAssign);
 			msg.channel.send(`Role ${roleAssign.name} was created and assigned to ${userToSetRole.displayName}`);
