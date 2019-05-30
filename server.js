@@ -67,7 +67,7 @@ client.on('messageReactionAdd', (messageReaction, user) => {
 
 	*/
 	// Set What you want to do
-	if (messageReaction.message.id == '583356382170841088') {
+	if (messageReaction.message.id == '583366761198387201') {
 		var hexEmoji = messageReaction.emoji.name.hexEncode();
 		var server = messageReaction.message.guild;
 		var userToSetRole = server.members.find(member => member.displayName === user.username);

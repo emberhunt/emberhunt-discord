@@ -13,8 +13,10 @@ module.exports = {
 
 setTimezoneSimple = (msg, server) => {
 	var userToSetRole = server.members.find(member => member.id === msg.author.id);
-	if (!msg.content.match(/^([+|-]((?:[0-9]|1[0-1])?|12))$/g) || userToSetRole == null)
+	if (!msg.content.match(/^([+|-]((?:[0-9]|1[0-1])?|12))$/g) || userToSetRole == null) {
 		msg.delete().then(msg => console.log(`Deleted message from ${msg.author.username}`)).catch(console.error);
+		return;
+	}
 	var role = server.roles.find(guildRole => guildRole.name === "GMT" + msg.content);// Check to see if a GMT role already exists for the user and delete it
 	var currentRole = userToSetRole.roles.find(guildRole => guildRole.name.match(/^(GMT[+|-]((?:[0-9]|1[0-1])?|12))$/g));
 	if (currentRole)
@@ -31,4 +33,6 @@ setTimezoneSimple = (msg, server) => {
 			userToSetRole.addRole(roleAssign).then(msg.delete().then(msg => console.log(`Deleted message from ${msg.author.username}`)).catch(console.error));
 		});
 	}
+
+	msg.delete().then(msg => console.log(`Deleted message from ${msg.author.username}`)).catch(console.error);
 }
