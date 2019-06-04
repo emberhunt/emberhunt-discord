@@ -89,12 +89,19 @@ client.on('messageReactionAdd', (messageReaction, user) => {
 		} else if (hexEmoji === "d83ddc41") {
 			// Eye - Nothing
 			role = server.roles.find(guildRole => guildRole.name === "Not here to help :(");
+			userToSetRole.removeRole(server.roles.find(guildRole => guildRole.name === "programmer")).then(console.log).catch(console.error);
+			userToSetRole.removeRole(server.roles.find(guildRole => guildRole.name === "artist")).then(console.log).catch(console.error);
+			userToSetRole.removeRole(server.roles.find(guildRole => guildRole.name === "sound-engineer")).then(console.log).catch(console.error);
+			userToSetRole.removeRole(server.roles.find(guildRole => guildRole.name === "tester")).then(console.log).catch(console.error);
+			userToSetRole.removeRole(server.roles.find(guildRole => guildRole.name === "writer")).then(console.log).catch(console.error);
 		} else if (hexEmoji === "00690063006f006e") {
 			// Icon - Writer
 			role = server.roles.find(guildRole => guildRole.name === "writer");
 		}
-		if (role)
+		if (role) {
+			userToSetRole.removeRole(server.roles.find(guildRole => guildRole.name === "Not here to help :(")).then(console.log).catch(console.error);
 			userToSetRole.addRole(role).then(console.log).catch(console.error);
+		}
 	}
 
 	/*
