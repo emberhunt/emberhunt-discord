@@ -18,7 +18,7 @@ setTimezoneSimple = (msg, server) => {
 		return;
 	}
 	var role = server.roles.find(guildRole => guildRole.name === "GMT" + msg.content);// Check to see if a GMT role already exists for the user and delete it
-	var currentRole = userToSetRole.roles.find(guildRole => guildRole.name.match(/^(GMT[+|-]((?:[0-9]|1[0-1])?|12)(:30)?))$/g));
+	var currentRole = userToSetRole.roles.find(guildRole => guildRole.name.match(/^(GMT[+|-]((?:[0-9]|1[0-1])?|12)(:30)?)$/g));
 	if (currentRole)
 		userToSetRole.removeRole(currentRole).catch(console.error);
 	if (role) {
