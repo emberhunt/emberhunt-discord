@@ -39,7 +39,7 @@ module.exports = {
 	monitorDocker: (channels) => {
 		const server = new NetCat();
 		server.port(Global.dockerport).listen().on('data', (client, data) => {
-			channels.forEach(channel => channel.send("```" + `${data}` + "```");
+			channels.forEach(channel => channel.send("```" + `${data}` + "```"));
 		});
 	}
 }
