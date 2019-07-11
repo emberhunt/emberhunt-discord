@@ -36,10 +36,10 @@ module.exports = {
 	        });
 	    });
 	},
-	monitorDocker: (channel) => {
+	monitorDocker: (channels) => {
 		const server = new NetCat();
 		server.port(Global.dockerport).listen().on('data', (client, data) => {
-			channel.send("```" + `${data}` + "```");
+			channels.forEach(channel => channel.send("```" + `${data}` + "```");
 		});
 	}
 }

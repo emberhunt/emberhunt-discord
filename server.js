@@ -15,7 +15,7 @@ client.on("error", (m) => console.log("[error]", m));
 
 client.on('ready', () => {
 	// Initialization on ready
-	ServerComm.monitorDocker(client.channels.find(channel => channel instanceof Discord.TextChannel && channel.name === 'server-commands'));
+	ServerComm.monitorDocker(client.channels.filter(channel => channel instanceof Discord.TextChannel && channel.name === 'server-commands'));
 });
 
 client.on('message', msg => {
