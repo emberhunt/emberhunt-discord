@@ -1,5 +1,6 @@
 const Net = require('net');
 const Global = require('./globals.js');
+const NetCat = require('netcat/server');
 
 module.exports = {
 	processCommand: (message, chatUser) => {
@@ -34,5 +35,11 @@ module.exports = {
 	            }
 	        });
 	    });
+	},
+	monitorDocker: (channel) => {
+		const server = new NetCat();
+		server.port(Global.dockerport).listen().on('data', (client, data) => {
+			channel.send("```" + `${data}` + "```");
+		});
 	}
 }
